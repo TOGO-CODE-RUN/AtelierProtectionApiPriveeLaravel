@@ -1,7 +1,5 @@
 # Mise en place d'une sécurité d'api avis clé d'api
 
-# ETAPE 1 : Creation du projet laravel et initialisation
-
 1. Creation du projet
     # composer create-project laravel/laravel InitimeNoteApi
 
@@ -46,6 +44,35 @@
     # git add .
     # git commit -m "Creation des controllers et des routes"
 
+11. Premiere etape, protecter les routes avec laravel sanctum
+    - Definir la durée de vie du token dans le fichier : config/sanctum.php 'expiration' => 60 par exemple
+    - Et pour ceux qui utilise les cookies de session, definir la durée de vie du cookie dans le fichier : config/session.php 'lifetime' => 120 par exemple
+
+12. Limiter les requêtes avec le Middleware "Throttle"
+    - Appliquer le middleware "Throttle" sur les routes qui ont besoin de protection
+
+    # EXEMPLE 1
+    Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+    });
+
+    # EXEMPLE 2
+    Configurer les limites globales dans RouteServiceProvider
+
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+    }
+
+13. Faire un commit
+    # git add .
+    # git commit -m "Protection des routes avec laravel sanctum"
+
+13. Creation de la route pour la connexion
 
 
 

@@ -49,7 +49,7 @@ class NoteController extends Controller
             
             return response()->json(
                 [
-                    "success" => false,
+                    "success" => true,
                     "message" => "Notes récupérées avec succès.",
                     "notes" => $notes,
                 ], 201
@@ -60,7 +60,8 @@ class NoteController extends Controller
                     'user_id' => Auth::id(), 
                     'message' => 'Erreur lors de la récupération des notes.',
                     'error' => $e->getMessage(),
-                ], 500);
+                ], 500,
+            );
         }
     }
 

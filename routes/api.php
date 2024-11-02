@@ -36,9 +36,18 @@ Route::middleware('auth:sanctum')->group(function () {
     
 });
 
-Route::get('/test', function(){
-    return response()->json([
-        "message" => "Hello World",
-        "success" => true,
-    ]);
+
+
+/*
+    Le middleware throttle est utilisé pour limiter le nombre de requêtes à l'API 
+    par utilisateur. Il prend deux arguments : le nombre de requêtes autorisées 
+    et la durée en minutes pendant laquelle ces requêtes sont autorisées.
+
+    Dans cet exemple, throttle:60,1 limite l'utilisateur à 60 requêtes par minute 
+    pour les routes protégées par Sanctum.
+*/
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });

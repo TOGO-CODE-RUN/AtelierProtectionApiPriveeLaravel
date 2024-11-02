@@ -46,7 +46,16 @@ return [
     |
     */
 
-    'expiration' => null,
+    // Par defaut
+    // 'expiration' => null,
+
+    // Definir explicitement la durée de vie d'un token
+    'expiration' => 60, // 1 heure
+    
+    // 'expiration' => 1440, // 1 jour
+    // 'expiration' => 10080, // 1 semaine
+    // 'expiration' => 43200, // 1 mois
+    // 'expiration' => 518400, // 1 an
 
     /*
     |--------------------------------------------------------------------------
