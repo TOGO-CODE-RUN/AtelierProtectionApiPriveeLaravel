@@ -72,8 +72,14 @@
     # git add .
     # git commit -m "Protection des routes avec laravel sanctum"
 
-13. Creation de la route pour la connexion
-
+14. Ajouter la sécurité d'api avec clé d'api
+    - php artisan make:middleware ApiKeyMiddleware
+    - dans le fichier : app/Http/Middleware/ApiKeyMiddleware.php ecrire le code de retriction aux routes
+    - dans le fichier : app/Http/Kernel.php : Ajout du middleware de clé API.
+    - Dans le fichier : .env: definir la clé API
+    - EXEMPLE : API_SECRET_KEY="MBALLAH#C0de@DeyDey!!APP_2024-By_Mounix&FoR\TCR"
+    - Dans le fichier : route.php : Appliquer le middleware "ApiKeyMiddleware" sur les routes
+    
 
 
 
