@@ -95,15 +95,24 @@ class NoteController extends Controller
     public function show($id)
     {
         try {
+            // Vérifie que la note appartient à l'utilisateur connecté
             $note = Note::where('id', $id)
-                        ->where('user_id', Auth::id()) // Vérifie que la note appartient à l'utilisateur connecté
+                        ->where('user_id', Auth::user()->id) 
+                        ->select('title','content')
                         ->firstOrFail();
 
-            return response()->json($note);
+            return response()->json([
+                'success'=> true,
+                'message' => 'Note récupérée avec succès.',
+                'note' => $note,
+            ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Note introuvable.'], 404);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Erreur lors de la récupération de la note.'], 500);
+            return response()->json([
+                'message' => 'Erreur lors de la récupération de la note.',
+                // 'error' => $e->getMessage(), 
+            ], 500);
         }
     }
 
@@ -127,7 +136,7 @@ class NoteController extends Controller
             return response()->json($note);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Note introuvable.'], 404);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Erreur lors de la mise à jour de la note.'], 500);
         }
     }

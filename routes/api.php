@@ -34,7 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // NOTE
     Route::post("/note/create", [NoteController::class,"store"])->name("note_create");
     Route::get("/user/notes", [NoteController::class,"index"])->name("user_notes_list");
-    
+    Route::get("/user/note/{id}", action: [NoteController::class,"show"])->name("show_user_note");
+
 });
 
 
@@ -53,6 +54,8 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
     });
 });
 
+// Utiliser HSM
+// ALGO PGP
 
 // ROUTE PROTEGÉES PAR API KEY
 Route::middleware('api.key')->group(function () {
@@ -68,8 +71,18 @@ Route::middleware('api.key')->group(function () {
         {
             return response()->json([
                 'success'=> false,
-                'message'=> $e->getMessage()
+                // 'message'=> $e->getMessage()
             ]);
         }
+    });
+});
+
+
+/*
+    Route protégée à la fois par clé d'API, laravel Sanctum et par le middleware Throttle
+*/
+Route::middleware(['api.key','auth:sanctum', 'throttle:60,1'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
     });
 });

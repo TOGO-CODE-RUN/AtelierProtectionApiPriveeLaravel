@@ -32,6 +32,7 @@ class UserController extends Controller
 
         } catch (Exception $e) {
             return response()->json([
+                'error' => $e->getMessage(),
                 'success' => false,
                 'message' => "Erreur lors de la création de l'utilisateur."
             ], 500);
